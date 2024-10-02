@@ -1,5 +1,8 @@
-# Dockerfile
+# 베이스 이미지 설정
 FROM rocker/rstudio:4.4.0
+
+# 루트 사용자로 전환
+USER root
 
 # 시스템 패키지 업데이트 및 필수 라이브러리 설치
 RUN apt-get update && apt-get install -y \
@@ -10,8 +13,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# jovyan 사용자가 존재하는지 확인
-RUN id jovyan
+# jovyan 사용자 생성
+RUN useradd -m -s /bin/bash jovyan || true
 
 # 사용자 라이브러리 디렉토리 생성 및 권한 설정
 RUN mkdir -p /home/jovyan/R/library && \
@@ -22,3 +25,6 @@ ENV R_LIBS_USER=/home/jovyan/R/library
 
 # (선택 사항) 필요한 R 패키지 사전 설치
 RUN R -e "install.packages(c('XVector', 'SparseArray', 'GenomicRanges', 'DelayedArray', 'SummarizedExperiment', 'DESeq2'), lib='/home/jovyan/R/library', repos='http://cran.rstudio.com/')"
+
+# 다시 jovyan 사용자로 전환
+USER jovyan
