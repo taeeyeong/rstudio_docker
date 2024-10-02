@@ -32,4 +32,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: your_dockerhub_username/my_rstudio_docker:latest
+        tags: taeeyeong/rstudio_docker:latest
