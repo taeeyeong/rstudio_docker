@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# jovyan 사용자가 존재하는지 확인
+RUN id jovyan
+
 # 사용자 라이브러리 디렉토리 생성 및 권한 설정
 RUN mkdir -p /home/jovyan/R/library && \
     chown -R jovyan:jovyan /home/jovyan/R/library
